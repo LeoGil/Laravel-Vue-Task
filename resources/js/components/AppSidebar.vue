@@ -16,7 +16,7 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'Tasks',
-        href: '/dashboard',
+        href: '/tasks',
         icon: ListTodo,
     },
 ];
