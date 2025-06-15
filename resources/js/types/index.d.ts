@@ -42,7 +42,7 @@ export interface Task {
     description: string | null;
     user_id: number;
     priority: 'low' | 'medium' | 'high';
-    due_date: string | null;
+    due_date: string;
     created_at: string;
     updated_at: string;
 }

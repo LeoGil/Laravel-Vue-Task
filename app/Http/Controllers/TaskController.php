@@ -13,7 +13,10 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = Task::where('user_id', Auth()->id())->get();
+        $tasks = Task::where('user_id', Auth()->id())
+            ->orderBy('due_date', 'desc')
+            ->paginate(5)
+            ->withQueryString();
         return Inertia::render('Tasks/Index', compact('tasks'));
     }
 
