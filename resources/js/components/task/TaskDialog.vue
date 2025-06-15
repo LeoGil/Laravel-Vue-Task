@@ -9,9 +9,8 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/components/ui/dialog'
-import { type PropType, defineProps } from 'vue'
 
-const props = defineProps({
+defineProps({
     triggerText: { type: String, default: 'Add Task' },
     triggerClass: { type: String, default: 'absolute right-4 top-4' },
     dialogTitle: { type: String, default: 'Add Task' },

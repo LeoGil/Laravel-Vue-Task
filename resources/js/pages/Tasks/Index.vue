@@ -3,7 +3,7 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/vue3';
 import PlaceholderPattern from '../../components/PlaceholderPattern.vue';
-import TaskDialog from '@/components/TaskDialog.vue';
+import TaskDialog from '@/components/task/TaskDialog.vue';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {

@@ -35,4 +35,16 @@ export interface User {
     updated_at: string;
 }
 
+export interface Task {
+    id: number;
+    title: string;
+    completed: boolean;
+    description: string | null;
+    user_id: number;
+    priority: 'low' | 'medium' | 'high';
+    due_date: string | null;
+    created_at: string;
+    updated_at: string;
+}
+
 export type BreadcrumbItemType = BreadcrumbItem;
