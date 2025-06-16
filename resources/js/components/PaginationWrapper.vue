@@ -17,10 +17,28 @@ interface Props {
 
 const props = defineProps<Props>()
 
+function getCurrentParams(): Record<string, any> {
+    const params = new URLSearchParams(window.location.search)
+    const obj: Record<string, string> = {}
+    params.forEach((v, k) => {
+        obj[k] = v
+    })
+    return obj
+}
+
 function goToPage(page: number) {
-    if (page >= 1 && page <= Math.ceil(props.total / props.perPage)) {
-        router.visit(`?page=${page}`, { preserveScroll: true })
-    }
+    const lastPage = Math.ceil(props.total / props.perPage)
+    if (page < 1 || page > lastPage) return
+
+    const params = getCurrentParams()
+    params.page = String(page)
+
+    router.visit(window.location.pathname, {
+        method: 'get',
+        preserveScroll: true,
+        preserveState: true,
+        data: params,
+    })
 }
 </script>
 
@@ -30,11 +48,12 @@ function goToPage(page: number) {
         <PaginationContent v-slot="{ items }">
             <PaginationFirst />
 
-            <template v-for="(item, index) in items" :key="index">
+            <template v-for="(item, idx) in items" :key="idx">
                 <PaginationItem v-if="item.type === 'page'" :value="item.value" :is-active="item.value === page">
                     {{ item.value }}
                 </PaginationItem>
             </template>
+
             <PaginationLast />
         </PaginationContent>
     </Pagination>

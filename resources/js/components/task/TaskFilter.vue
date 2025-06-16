@@ -24,6 +24,7 @@ watch(() => props.status, (newStatus) => {
 watch(selectedStatus, (newStatus) => {
     router.get('/tasks', {
         status: newStatus !== 'all' ? newStatus : undefined,
+        page: 1,
     }, {
         preserveScroll: true,
         preserveState: true,
