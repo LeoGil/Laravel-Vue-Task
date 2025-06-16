@@ -35,7 +35,7 @@ const breadcrumbs: BreadcrumbItem[] = [
         <Head title="Tasks" />
 
         <TaskDialog triggerText="Add Task" triggerClass="absolute right-4 top-4" dialogTitle="New Task"
-            dialogDescription="Just an example.">
+            dialogDescription="Create a new task.">
         </TaskDialog>
         <div class="flex flex-col gap-4 p-4">
             <TaskFilter :status="filters.status" />

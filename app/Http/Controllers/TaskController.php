@@ -42,12 +42,20 @@ class TaskController extends Controller
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'title'       => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'due_date'    => 'required|date',
+            'priority'    => 'required|in:low,medium,high',
+        ]);
+
+        $data['user_id'] = auth()->id();
+        Task::create($data);
+
+        // Ao usar Inertia, um redirect normal atualiza a página
+        return redirect()->route('tasks.index');
     }
 
     /**
