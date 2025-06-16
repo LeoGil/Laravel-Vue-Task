@@ -11,13 +11,27 @@ class TaskController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $tasks = Task::where('user_id', Auth()->id())
-            ->orderBy('due_date', 'desc')
-            ->paginate(5)
+        $query = Task::where('user_id', Auth()->id());
+        if ($request->has('status')) {
+            $status = $request->input('status');
+            if ($status === 'completed') {
+                $query->where('completed', true);
+            } elseif ($status === 'pending') {
+                $query->where('completed', false);
+            }
+        }
+        $tasks = $query->orderBy('due_date', 'desc')
+            ->paginate(15)
             ->withQueryString();
-        return Inertia::render('Tasks/Index', compact('tasks'));
+
+        return Inertia::render('Tasks/Index', [
+            'tasks' => $tasks,
+            'filters' => [
+                'status' => $status ?? null,
+            ],
+        ]);
     }
 
     /**

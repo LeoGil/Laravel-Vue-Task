@@ -5,8 +5,6 @@ import {
     PaginationFirst,
     PaginationLast,
     PaginationItem,
-    PaginationNext,
-    PaginationPrevious,
 } from '@/components/ui/pagination'
 
 import { router } from '@inertiajs/vue3'
@@ -31,15 +29,12 @@ function goToPage(page: number) {
         @update:page="goToPage">
         <PaginationContent v-slot="{ items }">
             <PaginationFirst />
-            <PaginationPrevious />
 
             <template v-for="(item, index) in items" :key="index">
                 <PaginationItem v-if="item.type === 'page'" :value="item.value" :is-active="item.value === page">
                     {{ item.value }}
                 </PaginationItem>
             </template>
-
-            <PaginationNext />
             <PaginationLast />
         </PaginationContent>
     </Pagination>

@@ -26,7 +26,24 @@ defineProps<Props>();
 
 function formatDate(dateString: string) {
     const date = new Date(dateString)
-    return format(date, "dd 'de' MMMM 'de' yyyy", { locale: ptBR })
+    return format(date, "dd/MM/yyyy", { locale: ptBR })
+}
+
+function getPriorityClass(priority: string): string {
+    switch (priority.toLowerCase()) {
+        case 'high':
+            return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
+        case 'medium':
+            return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300';
+        case 'low':
+            return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
+        default:
+            return 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300';
+    }
+}
+
+function getStatusClass(status: boolean): string {
+    return status ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300' : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
 }
 </script>
 
@@ -49,9 +66,17 @@ function formatDate(dateString: string) {
                         {{ formatDate(task.due_date) }}
                     </TableCell>
                     <TableCell>{{ task.title }}</TableCell>
-                    <TableCell>{{ task.priority }}</TableCell>
+                    <TableCell>
+                        <span class="px-2 py-1 text-xs font-semibold rounded-full"
+                            :class="getPriorityClass(task.priority)">
+                            {{ task.priority }}
+                        </span>
+                    </TableCell>
                     <TableCell class="text-right">
-                        {{ task.completed ? 'Completed' : 'Pending' }}
+                        <span class="px-2 py-1 text-xs font-semibold rounded-full"
+                            :class="getStatusClass(task.completed)">
+                            {{ task.completed ? 'Completed' : 'Pending' }}
+                        </span>
                     </TableCell>
                 </TableRow>
             </TableBody>
