@@ -32,6 +32,7 @@ import {
 } from '@/components/ui/select';
 import { router } from '@inertiajs/vue3'
 import { ref } from 'vue';
+import { toast } from 'vue-sonner'
 
 /** Props vindas do parent */
 defineProps<{
@@ -60,7 +61,13 @@ const onSubmit = handleSubmit((values) => {
     }, {
         onSuccess: () => {
             open.value = false
+            toast.success('Task ' + values.title + ' created successfully!', {
+                position: 'top-center'
+            })
         },
+        onError: () => {
+            toast.error('Something went wrong!')
+        }
     })
 })
 </script>

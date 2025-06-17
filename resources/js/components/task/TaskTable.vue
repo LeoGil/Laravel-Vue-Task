@@ -48,7 +48,7 @@ function getStatusClass(status: boolean): string {
 </script>
 
 <template>
-    <div class="w-full m-4">
+    <div class="w-full">
         <Table>
             <TableHeader>
                 <TableRow>
