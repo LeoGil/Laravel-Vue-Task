@@ -5,7 +5,6 @@ import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 import {
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
@@ -24,6 +23,7 @@ import {
 import { router } from '@inertiajs/vue3'
 import { ref } from 'vue';
 import { toast } from 'vue-sonner'
+import { DiscAlbum } from 'lucide-vue-next'
 
 const formSchema = toTypedSchema(z.object({
     title: z.string().min(2).max(50),
@@ -32,7 +32,7 @@ const formSchema = toTypedSchema(z.object({
     priority: z.enum(['low', 'medium', 'high']),
 }))
 
-const { isFieldDirty, handleSubmit } = useForm({
+const { isFieldDirty, handleSubmit, isSubmitting } = useForm({
     validationSchema: formSchema,
 })
 
@@ -112,8 +112,8 @@ const onSubmit = handleSubmit((values) => {
                 </FormField>
             </div>
         </div>
-        <Button type="submit">
-            Submit
+        <Button type="submit" :disabled="isSubmitting">
+            {{ isSubmitting ? 'Creating...' : 'Create Task' }}
         </Button>
     </form>
 </template>
