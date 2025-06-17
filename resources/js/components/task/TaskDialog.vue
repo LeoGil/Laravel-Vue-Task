@@ -39,7 +39,7 @@ const open = ref(false)
                 <DialogDescription>
                     {{ dialogDescription }}
                 </DialogDescription>
-                <TaskForm />
+                <TaskForm @success="open = false" />
             </DialogHeader>
         </DialogContent>
     </Dialog>

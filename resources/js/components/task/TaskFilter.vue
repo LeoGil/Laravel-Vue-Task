@@ -34,7 +34,7 @@ watch(selectedStatus, (newStatus) => {
 
 <template>
     <div class="flex flex-col gap-2">
-        <Label for="status">Filter by status</Label>
+        <Label>Filter by status</Label>
         <Select id="status" v-model="selectedStatus">
             <SelectTrigger class="w-[180px]">
                 <SelectValue placeholder="Filter by status" />

@@ -1,4 +1,9 @@
 <script setup lang="ts">
+const emit = defineEmits<{
+    (e: 'success'): void
+}>()
+
+
 import { useForm } from 'laravel-precognition-vue-inertia'
 import { Button } from '@/components/ui/button'
 import {
@@ -39,8 +44,8 @@ const onSubmit = () => {
             })
         },
         onSuccess: () => {
-            open.value = false
-            toast.success('Tarefa criada com sucesso', {
+            emit('success')
+            toast.success('Tarefa criada com sucesso!', {
                 position: 'top-center',
             })
         },
