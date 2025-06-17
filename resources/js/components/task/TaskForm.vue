@@ -23,7 +23,6 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { ref } from 'vue';
 import { toast } from 'vue-sonner'
 
 const form = useForm('post', route('tasks.store'), {
@@ -32,8 +31,6 @@ const form = useForm('post', route('tasks.store'), {
     due_date: '',
     priority: '',
 })
-
-const open = ref(false)
 
 const onSubmit = () => {
     form.submit({
