@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateTaskRequest;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -42,15 +43,9 @@ class TaskController extends Controller
         //
     }
 
-    public function store(Request $request)
+    public function store(CreateTaskRequest $request)
     {
-        $data = $request->validate([
-            'title'       => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'due_date'    => 'required|date',
-            'priority'    => 'required|in:low,medium,high',
-        ]);
-
+        $data = $request->validated();
         $data['user_id'] = auth()->id();
         Task::create($data);
 
