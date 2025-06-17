@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CreateTaskRequest;
+use App\Http\Requests\StoreTaskRequest;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -43,7 +43,7 @@ class TaskController extends Controller
         //
     }
 
-    public function store(CreateTaskRequest $request)
+    public function store(StoreTaskRequest $request)
     {
         $data = $request->validated();
         $data['user_id'] = auth()->id();

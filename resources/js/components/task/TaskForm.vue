@@ -1,14 +1,12 @@
 <script setup lang="ts">
-import { useForm } from 'vee-validate'
+import { useForm } from 'laravel-precognition-vue-inertia'
 import { Button } from '@/components/ui/button'
-import { toTypedSchema } from '@vee-validate/zod'
-import * as z from 'zod'
 import {
+    Form,
     FormControl,
     FormField,
     FormItem,
     FormLabel,
-    FormMessage,
 } from '@/components/ui/form'
 import { Textarea } from '@/components/ui/textarea'
 import { Input } from '@/components/ui/input'
@@ -20,82 +18,84 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { router } from '@inertiajs/vue3'
 import { ref } from 'vue';
 import { toast } from 'vue-sonner'
-import { DiscAlbum } from 'lucide-vue-next'
 
-const formSchema = toTypedSchema(z.object({
-    title: z.string().min(2).max(50),
-    description: z.string().min(2).max(255),
-    due_date: z.string(),
-    priority: z.enum(['low', 'medium', 'high']),
-}))
-
-const { isFieldDirty, handleSubmit, isSubmitting } = useForm({
-    validationSchema: formSchema,
+const form = useForm('post', route('tasks.store'), {
+    title: '',
+    description: '',
+    due_date: '',
+    priority: '',
 })
 
 const open = ref(false)
 
-const onSubmit = handleSubmit((values) => {
-    router.post(route('tasks.store'), {
-        ...values,
-    }, {
-        onSuccess: () => {
-            open.value = false
-            toast.success('Task ' + values.title + ' created successfully!', {
-                position: 'top-center'
+const onSubmit = () => {
+    form.submit({
+        preserveScroll: true,
+        onError: () => {
+            toast.error('Por favor, corrija os erros antes de enviar.', {
+                position: 'top-center',
             })
         },
-        onError: () => {
-            toast.error('Something went wrong!', {
+        onSuccess: () => {
+            open.value = false
+            toast.success('Tarefa criada com sucesso', {
                 position: 'top-center',
-                description: 'Please try again.'
             })
-        }
+        },
     })
-})
+}
+
+
 </script>
 <template>
-    <form @submit="onSubmit" class="space-y-4">
-        <FormField v-slot="{ componentField }" name="title" :validate-on-blur="!isFieldDirty">
+    <Form @submit="onSubmit" class="space-y-4">
+        <FormField name="title" v-slot="{ componentField }">
             <FormItem>
-                <FormLabel>Title</FormLabel>
+                <FormLabel :data-error="form.invalid('title')">Title</FormLabel>
                 <FormControl>
-                    <Input type="text" v-bind="componentField" />
+                    <Input v-model="form.title" :aria-invalid="form.invalid('title')" v-bind="componentField" />
                 </FormControl>
-                <FormMessage />
+                <div class="text-destructive-foreground text-sm" v-if="form.invalid('title')">
+                    {{ form.errors.title }}
+                </div>
             </FormItem>
         </FormField>
-        <FormField v-slot="{ componentField }" name="description" :validate-on-blur="!isFieldDirty">
+        <FormField name="description" v-slot="{ componentField }">
             <FormItem>
-                <FormLabel>Description</FormLabel>
+                <FormLabel :data-error="form.invalid('description')">Description</FormLabel>
                 <FormControl>
-                    <Textarea type="text" v-bind="componentField" />
+                    <Textarea v-model="form.description" :aria-invalid="form.invalid('description')"
+                        v-bind="componentField" />
                 </FormControl>
-                <FormMessage />
+                <div class="text-destructive-foreground text-sm" v-if="form.invalid('description')">
+                    {{ form.errors.description }}
+                </div>
             </FormItem>
         </FormField>
         <div class="grid grid-cols-2 gap-4">
             <div>
-                <FormField v-slot="{ componentField }" name="due_date" :validate-on-blur="!isFieldDirty">
+                <FormField name="due_date" v-slot="{ componentField }">
                     <FormItem>
-                        <FormLabel>Due Date</FormLabel>
+                        <FormLabel :data-error="form.invalid('due_date')">Due Date</FormLabel>
                         <FormControl>
-                            <Input type="date" v-bind="componentField" />
+                            <Input type="date" v-model="form.due_date" :aria-invalid="form.invalid('due_date')"
+                                v-bind="componentField" />
                         </FormControl>
-                        <FormMessage />
+                        <div class="text-destructive-foreground text-sm" v-if="form.invalid('due_date')">
+                            {{ form.errors.due_date }}
+                        </div>
                     </FormItem>
                 </FormField>
             </div>
             <div>
-                <FormField v-slot="{ componentField }" name="priority" :validate-on-blur="!isFieldDirty">
+                <FormField name="priority" v-slot="{ componentField }">
                     <FormItem>
-                        <FormLabel>Priority</FormLabel>
+                        <FormLabel :data-error="form.invalid('priority')">Priority</FormLabel>
                         <FormControl>
-                            <Select id="priority" v-bind="componentField">
-                                <SelectTrigger class="w-full">
+                            <Select v-model="form.priority" v-bind="componentField">
+                                <SelectTrigger class="w-full" :aria-invalid="form.invalid('priority')">
                                     <SelectValue placeholder="Select a priority" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -107,13 +107,15 @@ const onSubmit = handleSubmit((values) => {
                                 </SelectContent>
                             </Select>
                         </FormControl>
-                        <FormMessage />
+                        <div class="text-destructive-foreground text-sm" v-if="form.invalid('priority')">
+                            {{ form.errors.priority }}
+                        </div>
                     </FormItem>
                 </FormField>
             </div>
         </div>
-        <Button type="submit" :disabled="isSubmitting">
-            {{ isSubmitting ? 'Creating...' : 'Create Task' }}
+        <Button type="submit" :disabled="form.processing">
+            {{ form.processing ? 'Creating...' : 'Create Task' }}
         </Button>
-    </form>
+    </Form>
 </template>
