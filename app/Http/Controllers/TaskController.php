@@ -102,6 +102,12 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        //
+        if ($task->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $task->delete();
+
+        return back();
     }
 }

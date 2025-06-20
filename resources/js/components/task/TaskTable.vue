@@ -86,6 +86,17 @@ function undoCompleteTask(taskId: number) {
     })
 }
 
+function deleteTask(taskId: number) {
+    confirm('Are you sure you want to delete this task?') && router.delete(route('tasks.destroy', taskId), {
+        preserveScroll: true,
+        onSuccess: () => {
+            toast.success('Tarefa excluída com sucesso!', {
+                position: 'top-center',
+            })
+        },
+    })
+}
+
 
 function getStatusClass(status: boolean): string {
     return status ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300' : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
@@ -152,7 +163,7 @@ function getTextDecorationClass(completed: boolean): string {
                                 </DropdownMenuItem>
                                 <DropdownMenuItem>Edit</DropdownMenuItem>
                                 <DropdownMenuSeparator />
-                                <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
+                                <DropdownMenuItem @click="deleteTask(task.id)" variant="destructive">Delete</DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
                     </TableCell>
