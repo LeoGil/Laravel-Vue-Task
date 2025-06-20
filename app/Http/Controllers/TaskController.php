@@ -23,24 +23,23 @@ class TaskController extends Controller
                 $query->where('completed', false);
             }
         }
+
+        if ($request->has('priority')) {
+            $priority = $request->input('priority');
+            $query->where('priority', $priority);
+        }
+
         $tasks = $query->orderBy('due_date', 'desc')
-            ->paginate(15)
+            ->paginate(10)
             ->withQueryString();
 
         return Inertia::render('Tasks/Index', [
             'tasks' => $tasks,
             'filters' => [
                 'status' => $status ?? null,
+                'priority' => $priority ?? null
             ],
         ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     public function store(StoreTaskRequest $request)
@@ -49,8 +48,18 @@ class TaskController extends Controller
         $data['user_id'] = auth()->id();
         Task::create($data);
 
-        // Ao usar Inertia, um redirect normal atualiza a página
         return redirect()->route('tasks.index');
+    }
+
+    public function complete(Task $task)
+    {
+        if ($task->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $task->update(['completed' => true]);
+
+        return back();
     }
 
     /**

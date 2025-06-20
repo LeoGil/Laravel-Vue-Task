@@ -7,6 +7,16 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table'
+import { Button } from '@/components/ui/button'
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import { router } from '@inertiajs/vue3'
 
 import PaginationWrapper from '../PaginationWrapper.vue'
 import { Task } from '@/types';
@@ -42,8 +52,22 @@ function getPriorityClass(priority: string): string {
     }
 }
 
+function completeTask(taskId: number) {
+    router.patch(route('tasks.complete', taskId), {}, {
+        preserveScroll: true,
+        onSuccess: () => {
+            console.log(`Tarefa ${taskId} marcada como concluída`)
+        },
+    })
+}
+
+
 function getStatusClass(status: boolean): string {
     return status ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300' : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
+}
+
+function getTextDecorationClass(completed: boolean): string {
+    return completed ? 'line-through text-muted-foreground' : '';
 }
 </script>
 
@@ -58,14 +82,23 @@ function getStatusClass(status: boolean): string {
                     <TableHead class="text-right">
                         Status
                     </TableHead>
+                    <TableHead class="text-center">
+                        Actions
+                    </TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
                 <TableRow v-for="task in tasks.data" :key="task.id">
-                    <TableCell class="font-medium">
-                        {{ formatDate(task.due_date) }}
+                    <TableCell>
+                        <span :class="getTextDecorationClass(task.completed)">
+                            {{ formatDate(task.due_date) }}
+                        </span>
                     </TableCell>
-                    <TableCell>{{ task.title }}</TableCell>
+                    <TableCell>
+                        <span :class="getTextDecorationClass(task.completed)">
+                            {{ task.title }}
+                        </span>
+                    </TableCell>
                     <TableCell>
                         <span class="px-2 py-1 text-xs font-semibold rounded-full"
                             :class="getPriorityClass(task.priority)">
@@ -77,6 +110,26 @@ function getStatusClass(status: boolean): string {
                             :class="getStatusClass(task.completed)">
                             {{ task.completed ? 'Completed' : 'Pending' }}
                         </span>
+                    </TableCell>
+                    <TableCell class="text-center">
+                        <DropdownMenu>
+                            <DropdownMenuTrigger as-child>
+                                <Button variant="ghost" size="icon">
+                                    ...
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent>
+                                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem @click="() => !task.completed && completeTask(task.id)"
+                                    :disabled="task.completed">
+                                    {{ task.completed ? 'Already Done' : 'Mark as Completed' }}
+                                </DropdownMenuItem>
+                                <DropdownMenuItem>Edit</DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
                     </TableCell>
                 </TableRow>
             </TableBody>

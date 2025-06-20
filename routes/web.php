@@ -13,6 +13,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::resource('tasks', TaskController::class)
         ->names('tasks');
+    Route::patch('/tasks/{task}/complete', [TaskController::class, 'complete'])->name('tasks.complete');
 });
 
 require __DIR__ . '/settings.php';
