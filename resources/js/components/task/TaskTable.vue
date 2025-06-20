@@ -59,6 +59,7 @@ function completeTask(taskId: number) {
         onSuccess: () => {
             toast.success('Tarefa concluída com sucesso!', {
                 position: 'top-center',
+                invert: true,
                 duration: 6000,
                 action: {
                     label: 'Undo',
