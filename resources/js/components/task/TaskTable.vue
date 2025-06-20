@@ -59,7 +59,6 @@ function completeTask(taskId: number) {
         onSuccess: () => {
             toast.success('Tarefa concluída com sucesso!', {
                 position: 'top-center',
-                invert: true,
                 duration: 6000,
                 actionButtonStyle: {
                     backgroundColor: 'var(--color-primary)',
