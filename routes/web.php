@@ -14,6 +14,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('tasks', TaskController::class)
         ->names('tasks');
     Route::patch('/tasks/{task}/complete', [TaskController::class, 'complete'])->name('tasks.complete');
+    Route::patch('/tasks/{task}/incomplete', [TaskController::class, 'incomplete'])->name('tasks.incomplete');
 });
 
 require __DIR__ . '/settings.php';

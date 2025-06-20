@@ -22,6 +22,7 @@ import PaginationWrapper from '../PaginationWrapper.vue'
 import { Task } from '@/types';
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
+import { toast } from 'vue-sonner'
 
 interface Props {
     tasks: {
@@ -56,7 +57,27 @@ function completeTask(taskId: number) {
     router.patch(route('tasks.complete', taskId), {}, {
         preserveScroll: true,
         onSuccess: () => {
-            console.log(`Tarefa ${taskId} marcada como concluída`)
+            toast.success('Tarefa concluída com sucesso!', {
+                position: 'top-center',
+                duration: 6000,
+                action: {
+                    label: 'Undo',
+                    onClick: () => {
+                        undoCompleteTask(taskId)
+                    },
+                }
+            })
+        },
+    })
+}
+
+function undoCompleteTask(taskId: number) {
+    router.patch(route('tasks.incomplete', taskId), {}, {
+        preserveScroll: true,
+        onSuccess: () => {
+            toast.success('Tarefa desfeita com sucesso!', {
+                position: 'top-center',
+            })
         },
     })
 }

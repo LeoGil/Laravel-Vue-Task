@@ -62,6 +62,17 @@ class TaskController extends Controller
         return back();
     }
 
+    public function incomplete(Task $task)
+    {
+        if ($task->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $task->update(['completed' => false]);
+
+        return back();
+    }
+
     /**
      * Display the specified resource.
      */
