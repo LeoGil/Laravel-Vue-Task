@@ -61,6 +61,10 @@ function completeTask(taskId: number) {
                 position: 'top-center',
                 invert: true,
                 duration: 6000,
+                actionButtonStyle: {
+                    backgroundColor: 'var(--color-primary)',
+                    color: 'var(--color-primary-foreground)',
+                },
                 action: {
                     label: 'Undo',
                     onClick: () => {
