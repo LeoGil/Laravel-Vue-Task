@@ -17,6 +17,7 @@ defineProps<{
     }
     filters: {
         status: string | null;
+        priority: string | null;
     };
 }>();
 
@@ -38,7 +39,7 @@ const breadcrumbs: BreadcrumbItem[] = [
             dialogDescription="Create a new task.">
         </TaskDialog>
         <div class="flex flex-col gap-4 p-4">
-            <TaskFilter :status="filters.status" />
+            <TaskFilter :status="filters.status" :priority="filters.priority" />
             <TaskTable :tasks="tasks" />
         </div>
     </AppLayout>

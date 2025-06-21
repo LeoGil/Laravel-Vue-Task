@@ -48,7 +48,7 @@ class TaskController extends Controller
         $data['user_id'] = auth()->id();
         Task::create($data);
 
-        return redirect()->route('tasks.index');
+        return back();
     }
 
     public function complete(Task $task)
