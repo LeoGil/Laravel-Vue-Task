@@ -23,6 +23,10 @@ import { Task } from '@/types';
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { toast } from 'vue-sonner'
+import TaskDialog from './TaskDialog.vue'
+import { ref } from 'vue'
+
+const open = ref(false)
 
 interface Props {
     tasks: {
@@ -161,9 +165,16 @@ function getTextDecorationClass(completed: boolean): string {
                                     :disabled="task.completed">
                                     {{ task.completed ? 'Already Done' : 'Mark as Completed' }}
                                 </DropdownMenuItem>
-                                <DropdownMenuItem>Edit</DropdownMenuItem>
+                                <TaskDialog dialogTitle="Edit Task" dialogDescription="Edit the task." :task="task">
+                                    <template #trigger>
+                                        <DropdownMenuItem as-child @select.prevent="open = true">
+                                            <span>Edit</span>
+                                        </DropdownMenuItem>
+                                    </template>
+                                </TaskDialog>
                                 <DropdownMenuSeparator />
-                                <DropdownMenuItem @click="deleteTask(task.id)" variant="destructive">Delete</DropdownMenuItem>
+                                <DropdownMenuItem @click="deleteTask(task.id)" variant="destructive">Delete
+                                </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
                     </TableCell>

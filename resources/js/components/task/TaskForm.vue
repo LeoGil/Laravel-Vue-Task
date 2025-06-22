@@ -3,7 +3,6 @@ const emit = defineEmits<{
     (e: 'success'): void
 }>()
 
-
 import { useForm } from 'laravel-precognition-vue-inertia'
 import { Button } from '@/components/ui/button'
 import {
@@ -25,30 +24,46 @@ import {
 } from '@/components/ui/select';
 import { toast } from 'vue-sonner'
 
-const form = useForm('post', route('tasks.store'), {
-    title: '',
-    description: '',
-    due_date: '',
-    priority: '',
+const props = defineProps<{
+    method: 'post' | 'patch'
+    action: string
+    initial: {
+        title?: string
+        description?: string | null
+        due_date?: string
+        priority?: string
+    }
+}>()
+
+function formatDateForInput(iso: string): string {
+    return iso.split('T')[0]
+}
+
+const form = useForm(props.method, props.action, {
+    title: props.initial.title || '',
+    description: props.initial.description || '',
+    due_date: props.initial.due_date ? formatDateForInput(props.initial.due_date) : '',
+    priority: props.initial.priority || '',
 })
 
-const onSubmit = () => {
+function onSubmit() {
+    debugger
     form.submit({
         preserveScroll: true,
         onError: () => {
-            toast.error('Por favor, corrija os erros antes de enviar.', {
-                position: 'top-center',
-            })
+            toast.error('Por favor, corrija os erros antes de enviar.', { position: 'top-center' })
         },
         onSuccess: () => {
             emit('success')
-            toast.success('Tarefa criada com sucesso!', {
-                position: 'top-center',
-            })
+            toast.success(
+                props.method === 'post'
+                    ? 'Tarefa criada com sucesso!'
+                    : 'Tarefa atualizada com sucesso!',
+                { position: 'top-center' }
+            )
         },
     })
 }
-
 
 </script>
 <template>
@@ -57,7 +72,7 @@ const onSubmit = () => {
             <FormItem>
                 <FormLabel :data-error="form.invalid('title')">Title</FormLabel>
                 <FormControl>
-                    <Input v-model="form.title" :aria-invalid="form.invalid('title')" v-bind="componentField" />
+                    <Input v-model="form.title" :default-value="form.title" :aria-invalid="form.invalid('title')" v-bind="componentField" />
                 </FormControl>
                 <div class="text-destructive-foreground text-sm" v-if="form.invalid('title')">
                     {{ form.errors.title }}
@@ -68,7 +83,7 @@ const onSubmit = () => {
             <FormItem>
                 <FormLabel :data-error="form.invalid('description')">Description</FormLabel>
                 <FormControl>
-                    <Textarea v-model="form.description" :aria-invalid="form.invalid('description')"
+                    <Textarea v-model="form.description" :default-value="form.description" :aria-invalid="form.invalid('description')"
                         v-bind="componentField" />
                 </FormControl>
                 <div class="text-destructive-foreground text-sm" v-if="form.invalid('description')">
@@ -82,7 +97,7 @@ const onSubmit = () => {
                     <FormItem>
                         <FormLabel :data-error="form.invalid('due_date')">Due Date</FormLabel>
                         <FormControl>
-                            <Input type="date" v-model="form.due_date" :aria-invalid="form.invalid('due_date')"
+                            <Input type="date" v-model="form.due_date" :default-value="form.due_date" :aria-invalid="form.invalid('due_date')"
                                 v-bind="componentField" />
                         </FormControl>
                         <div class="text-destructive-foreground text-sm" v-if="form.invalid('due_date')">
@@ -96,7 +111,7 @@ const onSubmit = () => {
                     <FormItem>
                         <FormLabel :data-error="form.invalid('priority')">Priority</FormLabel>
                         <FormControl>
-                            <Select v-model="form.priority" v-bind="componentField">
+                            <Select v-model="form.priority" :default-value="form.priority" v-bind="componentField">
                                 <SelectTrigger class="w-full" :aria-invalid="form.invalid('priority')">
                                     <SelectValue placeholder="Select a priority" />
                                 </SelectTrigger>
@@ -117,7 +132,8 @@ const onSubmit = () => {
             </div>
         </div>
         <Button type="submit" :disabled="form.processing">
-            {{ form.processing ? 'Creating...' : 'Create Task' }}
+            {{ form.processing ? (props.method === 'post' ? 'Creating...' : 'Saving...') :
+                (props.method === 'post' ? 'Create Task' : 'Update Task') }}
         </Button>
     </Form>
 </template>
