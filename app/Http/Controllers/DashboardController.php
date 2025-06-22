@@ -43,12 +43,7 @@ class DashboardController extends Controller
                 ->count(),
         ];
 
-        // Tarefas por prioridade (se existir campo priority)
-        $tasksByPriority = (clone $baseQuery)
-            ->selectRaw('priority, count(*) as count')
-            ->groupBy('priority')
-            ->pluck('count', 'priority')
-            ->toArray();
+        $tasksByPriority = $this->getTasksByPriority($baseQuery);
 
         // Tarefas vencidas (se existir campo due_date)
         $overdueTasks = (clone $baseQuery)
@@ -85,5 +80,26 @@ class DashboardController extends Controller
             'recentTasks' => $recentTasks,
             'productivityData' => $productivityData,
         ]);
+    }
+
+    public function getTasksByPriority($baseQuery)
+    {
+        $query = clone $baseQuery;
+
+        $tasksByPriority = $query
+            ->selectRaw('priority, completed, count(*) as count')
+            ->groupBy('priority', 'completed')
+            ->get();
+
+        if ($tasksByPriority->isEmpty()) {
+            return [];
+        }
+
+        return $tasksByPriority->groupBy('priority')->map(function ($items) {
+            return [
+                'completed' => $items->firstWhere('completed', true)?->count ?? 0,
+                'pending' => $items->firstWhere('completed', false)?->count ?? 0,
+            ];
+        })->toArray();
     }
 }

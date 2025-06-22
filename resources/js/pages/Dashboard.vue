@@ -9,7 +9,6 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
@@ -20,9 +19,7 @@ import {
     Clock,
     Plus,
     TrendingUp,
-    CheckCircle2,
-    Info,
-    AlertCircle,
+    ChartNoAxesColumnIncreasing
 } from 'lucide-vue-next';
 import { computed } from 'vue';
 
@@ -36,7 +33,20 @@ const props = defineProps<{
             completed: number;
         };
         overdueTasks: number;
-        tasksByPriority: Record<string, number>;
+        tasksByPriority: {
+            low: {
+                completed: number;
+                pending: number;
+            };
+            medium: {
+                completed: number;
+                pending: number;
+            };
+            high: {
+                completed: number;
+                pending: number;
+            };
+        };
     };
     recentTasks: {
         id: number;
@@ -89,7 +99,8 @@ const formatDate = (dateString: string) => {
                     <h1 class="text-3xl font-bold tracking-tight">Dashboard</h1>
                     <p class="text-muted-foreground">Acompanhe o progresso das suas tarefas</p>
                 </div>
-                <TaskDialog :icon=Plus triggerText="Nova Tarefa" dialogTitle="New Task" dialogDescription="Create a new task." />
+                <TaskDialog :icon=Plus triggerText="Nova Tarefa" dialogTitle="New Task"
+                    dialogDescription="Create a new task." />
             </div>
 
             <!-- Cards básicos -->
@@ -177,14 +188,18 @@ const formatDate = (dateString: string) => {
                 </Card>
                 <!-- Prioridades -->
                 <Card>
-                    <CardHeader class="pb-2">
+                    <CardHeader class="flex items-center justify-between pb-2">
                         <CardTitle class="text-sm font-medium">Por Prioridade</CardTitle>
+                        <ChartNoAxesColumnIncreasing class="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent class="space-y-1">
-                        <div v-for="(count, priority) in props.stats.tasksByPriority" :key="priority"
-                            class="flex justify-between text-sm">
-                            <span class="capitalize">{{ priority }}</span>
-                            <Badge>{{ count }}</Badge>
+                        <div v-for="(status, priority) in props.stats.tasksByPriority" :key="priority"
+                            class="space-y-1">
+                            <div class="flex justify-between text-sm font-medium">
+                                <span class="capitalize">{{ priority }}</span>
+                                <span>{{ status.completed }} / {{ status.completed + status.pending }}</span>
+                            </div>
+                            <Progress :modelValue="(status.completed / (status.completed + status.pending)) * 100" />
                         </div>
                         <div v-if="Object.keys(props.stats.tasksByPriority).length === 0"
                             class="text-xs text-muted-foreground">
