@@ -47,7 +47,6 @@ const form = useForm(props.method, props.action, {
 })
 
 function onSubmit() {
-    debugger
     form.submit({
         preserveScroll: true,
         onError: () => {
@@ -67,12 +66,12 @@ function onSubmit() {
 
 </script>
 <template>
-    <Form @submit="onSubmit" class="space-y-4">
+    <Form @submit="onSubmit" class="space-y-4" :initial-values="form">
         <FormField name="title" v-slot="{ componentField }">
             <FormItem>
                 <FormLabel :data-error="form.invalid('title')">Title</FormLabel>
                 <FormControl>
-                    <Input v-model="form.title" :default-value="form.title" :aria-invalid="form.invalid('title')" v-bind="componentField" />
+                    <Input v-model="form.title" :aria-invalid="form.invalid('title')" v-bind="componentField" />
                 </FormControl>
                 <div class="text-destructive-foreground text-sm" v-if="form.invalid('title')">
                     {{ form.errors.title }}
@@ -83,7 +82,7 @@ function onSubmit() {
             <FormItem>
                 <FormLabel :data-error="form.invalid('description')">Description</FormLabel>
                 <FormControl>
-                    <Textarea v-model="form.description" :default-value="form.description" :aria-invalid="form.invalid('description')"
+                    <Textarea v-model="form.description" :aria-invalid="form.invalid('description')"
                         v-bind="componentField" />
                 </FormControl>
                 <div class="text-destructive-foreground text-sm" v-if="form.invalid('description')">
@@ -97,7 +96,7 @@ function onSubmit() {
                     <FormItem>
                         <FormLabel :data-error="form.invalid('due_date')">Due Date</FormLabel>
                         <FormControl>
-                            <Input type="date" v-model="form.due_date" :default-value="form.due_date" :aria-invalid="form.invalid('due_date')"
+                            <Input type="date" v-model="form.due_date" :aria-invalid="form.invalid('due_date')"
                                 v-bind="componentField" />
                         </FormControl>
                         <div class="text-destructive-foreground text-sm" v-if="form.invalid('due_date')">
@@ -111,7 +110,7 @@ function onSubmit() {
                     <FormItem>
                         <FormLabel :data-error="form.invalid('priority')">Priority</FormLabel>
                         <FormControl>
-                            <Select v-model="form.priority" :default-value="form.priority" v-bind="componentField">
+                            <Select v-model="form.priority" v-bind="componentField">
                                 <SelectTrigger class="w-full" :aria-invalid="form.invalid('priority')">
                                     <SelectValue placeholder="Select a priority" />
                                 </SelectTrigger>
