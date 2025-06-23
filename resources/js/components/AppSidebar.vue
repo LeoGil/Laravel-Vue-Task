@@ -5,7 +5,7 @@ import NavUser from '@/components/NavUser.vue';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
-import { BookOpen, Folder, LayoutDashboard, ListTodo } from 'lucide-vue-next';
+import { BookOpen, Folder, LayoutDashboard, ListTodo, NotepadText, Users, Tags } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 
 const mainNavItems: NavItem[] = [
@@ -18,7 +18,23 @@ const mainNavItems: NavItem[] = [
         title: 'Tasks',
         href: '/tasks',
         icon: ListTodo,
+        badge: 24
     },
+    {
+        title: 'Teams',
+        href: '/',
+        icon: Users,
+    },
+    {
+        title: 'Labels',
+        href: '/',
+        icon: Tags
+    },
+    {
+        title: 'Reports',
+        href: '/',
+        icon: NotepadText,
+    }
 ];
 
 const footerNavItems: NavItem[] = [

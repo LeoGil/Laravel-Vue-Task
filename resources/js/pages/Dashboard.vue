@@ -286,9 +286,9 @@ const formatDate = (dateString: string) => {
                                 <div v-for="data in productivityData" :key="data.date" class="flex items-center gap-2">
                                     <span class="w-8 text-xs">{{ data.day }}</span>
                                     <Progress
-                                        :modelValue="Math.min(100, (data.completed / (props.stats.weeklyStats.created || 1)) * 100)"
+                                        :modelValue="Math.min(100, (data.completed / (Math.ceil(props.stats.pendingTasks / 7) || 1)) * 100)"
                                         class="flex-1 h-2" />
-                                    <span class="w-6 text-xs text-right">{{ data.completed }}</span>
+                                    <span class="w-6 text-xs text-right">{{ data.completed }}/{{ Math.ceil(props.stats.pendingTasks / 7) }}</span>
                                 </div>
                             </div>
 

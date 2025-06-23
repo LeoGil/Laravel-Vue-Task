@@ -25,6 +25,7 @@ import { ptBR } from 'date-fns/locale'
 import { toast } from 'vue-sonner'
 import TaskDialog from './TaskDialog.vue'
 import { ref } from 'vue'
+import { MoveUp, MoveRight, MoveDown } from 'lucide-vue-next'
 
 const open = ref(false)
 
@@ -44,17 +45,14 @@ function formatDate(dateString: string) {
     return format(date, "dd/MM/yyyy", { locale: ptBR })
 }
 
-function getPriorityClass(priority: string): string {
-    switch (priority.toLowerCase()) {
-        case 'high':
-            return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
-        case 'medium':
-            return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300';
-        case 'low':
-            return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
-        default:
-            return 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300';
-    }
+const priorityIcons: Record<string, Component> = {
+    high: MoveUp,
+    medium: MoveRight,
+    low: MoveDown,
+}
+
+function getPriorityIcon(priority: string): Component | undefined {
+    return priorityIcons[priority]
 }
 
 function completeTask(taskId: number) {
@@ -140,8 +138,8 @@ function getTextDecorationClass(completed: boolean): string {
                         </span>
                     </TableCell>
                     <TableCell>
-                        <span class="px-2 py-1 text-xs font-semibold rounded-full"
-                            :class="getPriorityClass(task.priority)">
+                        <span class="px-2 py-1 rounded-full capitalize">
+                            <component :is="getPriorityIcon(task.priority)" class="inline-block mr-2 h-4 w-4 text-muted-foreground" />
                             {{ task.priority }}
                         </span>
                     </TableCell>

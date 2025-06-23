@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
+import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarMenuBadge } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/vue3';
 
@@ -25,6 +25,9 @@ const page = usePage();
                         <component :is="item.icon" />
                         <span>{{ item.title }}</span>
                     </Link>
+                    <SidebarMenuBadge v-if="item.badge">
+                        <span>{{ item.badge }}</span>
+                    </SidebarMenuBadge>
                 </SidebarMenuButton>
             </SidebarMenuItem>
         </SidebarMenu>
