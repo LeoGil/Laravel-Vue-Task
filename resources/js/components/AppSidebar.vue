@@ -22,7 +22,7 @@ const mainNavItems: NavItem[] = [
         title: 'Tasks',
         href: '/tasks',
         icon: ListTodo,
-        badge: tasksCount.value
+        badge: Number(tasksCount.value)
     },
     {
         title: 'Teams',
@@ -30,8 +30,8 @@ const mainNavItems: NavItem[] = [
         icon: Users,
     },
     {
-        title: 'Labels',
-        href: '/',
+        title: 'Tags',
+        href: '/tags',
         icon: Tags
     },
     {

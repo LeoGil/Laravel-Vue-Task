@@ -25,6 +25,7 @@ import { ptBR } from 'date-fns/locale'
 import { toast } from 'vue-sonner'
 import TaskDialog from './TaskDialog.vue'
 import { ref } from 'vue'
+import type { Component } from 'vue'
 import { MoveUp, MoveRight, MoveDown } from 'lucide-vue-next'
 
 const open = ref(false)
