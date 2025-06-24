@@ -4,9 +4,13 @@ import NavMain from '@/components/NavMain.vue';
 import NavUser from '@/components/NavUser.vue';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
 import { BookOpen, Folder, LayoutDashboard, ListTodo, NotepadText, Users, Tags } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
+import { computed } from 'vue';
+
+const page = usePage();
+const tasksCount = computed(() => page.props.tasksCount);
 
 const mainNavItems: NavItem[] = [
     {
@@ -18,7 +22,7 @@ const mainNavItems: NavItem[] = [
         title: 'Tasks',
         href: '/tasks',
         icon: ListTodo,
-        badge: 24
+        badge: tasksCount.value
     },
     {
         title: 'Teams',

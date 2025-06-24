@@ -2,8 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Task;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
 use Tighten\Ziggy\Ziggy;
 
@@ -51,6 +53,11 @@ class HandleInertiaRequests extends Middleware
                 'location' => $request->url(),
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
+            'tasksCount' => fn() => Auth::user()
+                ? Task::where('user_id', Auth::id())
+                ->where('completed', false)
+                ->count()
+                : 0,
         ];
     }
 }
