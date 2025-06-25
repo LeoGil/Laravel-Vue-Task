@@ -38,9 +38,14 @@ const breadcrumbs: BreadcrumbItem[] = [
         <TaskDialog triggerText="Add Task" triggerClass="absolute right-4 top-4" dialogTitle="New Task"
             dialogDescription="Create a new task.">
         </TaskDialog>
-        <div class="flex flex-col gap-4 p-4">
+        <div v-if="tasks.data.length > 0" class="flex flex-col gap-4 p-4">
             <TaskFilter :status="filters.status" :priority="filters.priority" />
             <TaskTable :tasks="tasks" />
+        </div>
+        <div v-else class="flex gap-4 p-4 flex-col items-center">
+            <p class="text-muted-foreground text-center">No tasks found.</p>
+            <TaskDialog triggerText="Create your first task" dialogTitle="New Task"
+                dialogDescription="Create a new task." />
         </div>
     </AppLayout>
 </template>

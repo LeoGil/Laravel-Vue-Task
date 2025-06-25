@@ -210,7 +210,7 @@ const formatDate = (dateString: string) => {
             </div>
 
             <!-- Tarefas Recentes e Produtividade -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <!-- Recentes -->
                 <Card>
                     <CardHeader>
@@ -235,10 +235,9 @@ const formatDate = (dateString: string) => {
                             </div>
                             <div v-if="recentTasks.length === 0" class="text-center py-6">
                                 <Clock class="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-                                <p class="text-muted-foreground">Nenhuma tarefa encontrada</p>
-                                <Button asChild class="mt-2" variant="outline">
-                                    <Link href="/tasks/create">Criar primeira questão</Link>
-                                </Button>
+                                <p class="text-muted-foreground mb-2">Nenhuma tarefa encontrada</p>
+                                <TaskDialog triggerText="Crie sua primeira tarefa" dialogTitle="New Task"
+                                    dialogDescription="Create a new task." />
                             </div>
                         </div>
                     </CardContent>
@@ -288,7 +287,8 @@ const formatDate = (dateString: string) => {
                                     <Progress
                                         :modelValue="Math.min(100, (data.completed / (Math.ceil(props.stats.pendingTasks / 7) || 1)) * 100)"
                                         class="flex-1 h-2" />
-                                    <span class="w-6 text-xs text-right">{{ data.completed }}/{{ Math.ceil(props.stats.pendingTasks / 7) }}</span>
+                                    <span class="w-6 text-xs text-right">{{ data.completed }}/{{
+                                        Math.ceil(props.stats.pendingTasks / 7) }}</span>
                                 </div>
                             </div>
 

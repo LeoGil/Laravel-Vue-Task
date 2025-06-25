@@ -17,6 +17,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { getBadgeStyle } from '@/lib/utils';
 
 interface Props {
     tags: {
@@ -38,6 +39,7 @@ defineProps<Props>()
                 <TableRow>
                     <TableHead>Name</TableHead>
                     <TableHead>Color</TableHead>
+                    <TableHead>Badge Example</TableHead>
                     <TableHead class="text-center">
                         Actions
                     </TableHead>
@@ -51,15 +53,33 @@ defineProps<Props>()
                     <TableCell class="font-medium">
                         {{ tag.color }}
                     </TableCell>
+                    <TableCell class="font-medium">
+                        <span class="px-2 py-1 rounded-full capitalize text-xs font-semibold" :style="getBadgeStyle(tag.color)">
+                            {{ tag.name }}
+                        </span>
+                    </TableCell>
                     <TableCell class="text-center">
                         <DropdownMenu>
                             <DropdownMenuTrigger as-child>
-                                <Button variant="secondary" size="sm">Actions</Button>
+                                <Button variant="ghost" size="icon">
+                                    ...
+                                </Button>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                                <DropdownMenuItem>View</DropdownMenuItem>
-                                <DropdownMenuItem>Update</DropdownMenuItem>
-                                <DropdownMenuItem>Remove</DropdownMenuItem>
+                            <DropdownMenuContent>
+                                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                <!-- <TaskDialog dialogTitle="Edit Task" dialogDescription="Edit the task." :task="task">
+                                    <template #trigger>
+                                        <DropdownMenuItem as-child @select.prevent="open = true">
+                                            <span>Edit</span>
+                                        </DropdownMenuItem>
+                                    </template>
+</TaskDialog> -->
+                                <DropdownMenuItem>Edit</DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                                <!-- <DropdownMenuItem @click="deleteTask(task.id)" variant="destructive">Delete
+                                </DropdownMenuItem> -->
+                                <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
                     </TableCell>

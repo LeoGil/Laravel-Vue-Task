@@ -33,8 +33,13 @@ const breadcrumbs: BreadcrumbItem[] = [
         <TagDialog :icon="Plus" triggerText="New Tag" dialogDescription="Create a new tag for your tasks."
             triggerClass="absolute right-4 top-4" dialogTitle="New Tag" />
 
-        <div class="flex flex-col gap-4 p-4">
+        <div v-if="tags.data.length > 0" class="flex flex-col gap-4 p-4">
             <TagTable :tags="tags" />
+        </div>
+        <div v-else class="flex gap-4 p-4 flex-col items-center">
+            <p class="text-muted-foreground text-center">No tags found.</p>
+            <TagDialog triggerText="Create your first tag" dialogTitle="New Tag"
+                dialogDescription="Create a new tag for your tasks." />
         </div>
     </AppLayout>
 </template>

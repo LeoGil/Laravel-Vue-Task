@@ -55,8 +55,11 @@ const submit = () => {
                 <InputError :message="form.errors.name" />
             </div>
             <div>
-                <Label for="color" class="mb-2">Color<span class="text-muted-foreground">(hex)</span></Label>
-                <Input id="color" class="mt-1 block w-full" v-model="form.color" placeholder="#000000" />
+                <Label for="color" class="mb-2">Color</Label>
+                <div class="flex items-center gap-2">
+                    <Input id="color" type="color" class="w-12 h-12 p-0 rounded" v-model="form.color" />
+                    <Input id="color-hex" class="mt-1 block w-full" v-model="form.color" placeholder="#000000" />
+                </div>
                 <InputError :message="form.errors.color" />
             </div>
         </div>
