@@ -10,13 +10,13 @@ import { toast } from 'vue-sonner';
 interface Props {
     method: 'post' | 'patch'
     action: string
-    initial: Tag | {}
+    initial: Partial<Tag>
 }
 const props = defineProps<Props>()
 
 const form = useForm({
-    name: '',
-    color: '',
+    name: props.initial.name ?? '',
+    color: props.initial.color ?? '',
 })
 
 const emit = defineEmits<{
@@ -24,24 +24,20 @@ const emit = defineEmits<{
 }>()
 
 const submit = () => {
-    let formRoute
-    if ('id' in props.initial) {
-        formRoute = props.method === 'post' ? route('tags.store') : route('tags.update', props.initial.id);
-    } else {
-        formRoute = route('tags.store');
-    }
+    const isEditing = 'id' in props.initial;
+    const formRoute = isEditing && props.method === 'patch'
+        ? route('tags.update', props.initial.id)
+        : route('tags.store');
 
     form[props.method](formRoute, {
         onSuccess: () => {
             emit('success')
             toast.success(
-                props.method === 'post'
-                    ? 'Tarefa criada com sucesso!'
-                    : 'Tarefa atualizada com sucesso!',
+                isEditing ? 'Tag updated with success!' : 'Tag created with success!',
                 { position: 'top-center' }
             )
         },
-    })
+    });
 }
 
 </script>
@@ -51,7 +47,7 @@ const submit = () => {
         <div class="flex flex-col gap-4">
             <div>
                 <Label for="name" class="mb-2">Tag name</Label>
-                <Input id="name" class="mt-1 block w-full" v-model="form.name" required />
+                <Input id="name" autocomplete="off" class="mt-1 block w-full" v-model="form.name" required />
                 <InputError :message="form.errors.name" />
             </div>
             <div>
@@ -65,7 +61,10 @@ const submit = () => {
         </div>
 
         <div class="flex items-center gap-4">
-            <Button :disabled="form.processing">Save</Button>
+            <Button :disabled="form.processing">
+                <span v-if="form.processing">Saving...</span>
+                <span v-else>Save</span>
+            </Button>
         </div>
     </form>
 </template>

@@ -18,6 +18,10 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { getBadgeStyle } from '@/lib/utils';
+import TagDialog from './TagDialog.vue';
+import { ref } from 'vue';
+
+const open = ref(false)
 
 interface Props {
     tags: {
@@ -68,14 +72,13 @@ defineProps<Props>()
                             <DropdownMenuContent>
                                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                                 <DropdownMenuSeparator />
-                                <!-- <TaskDialog dialogTitle="Edit Task" dialogDescription="Edit the task." :task="task">
+                                <TagDialog dialogTitle="Edit Tag" dialogDescription="Edit the tag." :tag="tag">
                                     <template #trigger>
                                         <DropdownMenuItem as-child @select.prevent="open = true">
                                             <span>Edit</span>
                                         </DropdownMenuItem>
                                     </template>
-</TaskDialog> -->
-                                <DropdownMenuItem>Edit</DropdownMenuItem>
+                                </TagDialog>
                                 <DropdownMenuSeparator />
                                 <!-- <DropdownMenuItem @click="deleteTask(task.id)" variant="destructive">Delete
                                 </DropdownMenuItem> -->
