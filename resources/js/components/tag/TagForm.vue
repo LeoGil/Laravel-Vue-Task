@@ -59,8 +59,8 @@ const submit = () => {
                 <div class="flex items-center gap-2">
                     <Input id="color" type="color" class="w-12 h-12 p-0 rounded" v-model="form.color" />
                     <Input id="color-hex" class="mt-1 block w-full" v-model="form.color" placeholder="#000000" />
+                    <InputError :message="form.errors.color" />
                 </div>
-                <InputError :message="form.errors.color" />
             </div>
         </div>
 
