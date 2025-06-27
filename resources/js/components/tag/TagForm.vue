@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import InputError from '@/components/InputError.vue';
 import { toast } from 'vue-sonner';
+import { RefreshCcw } from 'lucide-vue-next';
 
 interface Props {
     method: 'post' | 'patch'
@@ -58,7 +59,7 @@ const submit = () => {
                 <InputError :message="form.errors.description" />
             </div>
             <div>
-                <Label for="color" class="mb-2">Color</Label>
+                <Label for="color" class="mb-2">Color <span class="flex items-center gap-1 text-xs text-muted-foreground cursor-pointer" @click="form.color = '#' + Math.floor(Math.random() * 16777215).toString(16)">random color <RefreshCcw class="w-3 h-3"/></span></Label>
                 <div class="flex items-center gap-2">
                     <Input id="color" type="color" class="w-12 h-12 p-0 rounded" v-model="form.color" />
                     <Input id="color-hex" class="mt-1 block w-full" v-model="form.color" placeholder="#000000" />
