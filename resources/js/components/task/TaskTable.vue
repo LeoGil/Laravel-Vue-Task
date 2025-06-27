@@ -117,6 +117,7 @@ function getTextDecorationClass(completed: boolean): string {
                 <TableRow>
                     <TableHead>Due Date</TableHead>
                     <TableHead>Title</TableHead>
+                    <TableHead>Description</TableHead>
                     <TableHead>Priority</TableHead>
                     <TableHead class="text-right">
                         Status
@@ -135,7 +136,12 @@ function getTextDecorationClass(completed: boolean): string {
                     </TableCell>
                     <TableCell>
                         <span :class="getTextDecorationClass(task.completed)">
-                            {{ task.title }}
+                            {{ task.title.length > 50 ? task.title.slice(0, 50) + '...' : task.title }}
+                        </span>
+                    </TableCell>
+                    <TableCell>
+                        <span :class="getTextDecorationClass(task.completed)">
+                            {{ task.description !== null && task.description.length > 50 ? task.description.slice(0, 50) + '...' : task.description }}
                         </span>
                     </TableCell>
                     <TableCell>
