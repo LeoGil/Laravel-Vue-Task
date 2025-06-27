@@ -20,6 +20,8 @@ import {
 import { getBadgeStyle } from '@/lib/utils';
 import TagDialog from './TagDialog.vue';
 import { ref } from 'vue';
+import { toast } from 'vue-sonner';
+import { router } from '@inertiajs/vue3'
 
 const open = ref(false)
 
@@ -30,6 +32,22 @@ interface Props {
         per_page: number,
         total: number,
     }
+}
+
+function onDelete(id: number) {
+    confirm('Are you sure you want to delete this tag?') && router.delete(route('tags.destroy', id), {
+        preserveScroll: true,
+        onSuccess: () => {
+            toast.success('Tag deleted with success!', {
+                position: 'top-center',
+            })
+        },
+        onError: () => {
+            toast.error('Something went wrong!', {
+                position: 'top-center',
+            })
+        },
+    })
 }
 
 defineProps<Props>()
@@ -56,13 +74,15 @@ defineProps<Props>()
                         {{ tag.name }}
                     </TableCell>
                     <TableCell class="font-medium">
-                        {{ tag.description !== null && tag.description.length > 50 ? tag.description.slice(0, 50) + '...' : tag.description }}
+                        {{ tag.description !== null && tag.description.length > 50 ? tag.description.slice(0, 50) +
+                        '...' : tag.description }}
                     </TableCell>
                     <TableCell class="font-medium">
                         {{ tag.color }}
                     </TableCell>
                     <TableCell class="font-medium">
-                        <span class="px-2 py-1 rounded-full capitalize text-xs font-semibold" :style="getBadgeStyle(tag.color)">
+                        <span class="px-2 py-1 rounded-full capitalize text-xs font-semibold"
+                            :style="getBadgeStyle(tag.color)">
                             {{ tag.name }}
                         </span>
                     </TableCell>
@@ -84,9 +104,9 @@ defineProps<Props>()
                                     </template>
                                 </TagDialog>
                                 <DropdownMenuSeparator />
-                                <!-- <DropdownMenuItem @click="deleteTask(task.id)" variant="destructive">Delete
-                                </DropdownMenuItem> -->
-                                <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
+                                <DropdownMenuItem @click="onDelete(tag.id)" variant="destructive">
+                                    Delete
+                                </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
                     </TableCell>
