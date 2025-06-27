@@ -130,7 +130,7 @@ function getTextDecorationClass(completed: boolean): string {
             <TableBody>
                 <TableRow v-for="task in tasks.data" :key="task.id">
                     <TableCell>
-                        <span :class="getTextDecorationClass(task.completed)">
+                        <span :class="getTextDecorationClass(task.completed)" class="font-semibold">
                             {{ formatDate(task.due_date) }}
                         </span>
                     </TableCell>
