@@ -27,6 +27,11 @@ class StoreTagRequest extends FormRequest
                 'string',
                 'max:30',
             ],
+            'description' => [
+                'nullable',
+                'string',
+                'max:255',
+            ],
             'color' => [
                 'required',
                 'string',

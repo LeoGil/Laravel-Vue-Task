@@ -42,6 +42,7 @@ defineProps<Props>()
             <TableHeader>
                 <TableRow>
                     <TableHead>Name</TableHead>
+                    <TableHead>Description</TableHead>
                     <TableHead>Color</TableHead>
                     <TableHead>Badge Example</TableHead>
                     <TableHead class="text-center">
@@ -53,6 +54,9 @@ defineProps<Props>()
                 <TableRow v-for="tag in tags.data" :key="tag.id">
                     <TableCell class="font-medium">
                         {{ tag.name }}
+                    </TableCell>
+                    <TableCell class="font-medium">
+                        {{ tag.description !== null && tag.description.length > 50 ? tag.description.slice(0, 50) + '...' : tag.description }}
                     </TableCell>
                     <TableCell class="font-medium">
                         {{ tag.color }}

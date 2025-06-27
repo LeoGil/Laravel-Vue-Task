@@ -51,6 +51,7 @@ export interface Task {
 export interface Tag {
     id: number;
     name: string;
+    description: string | null;
     color: string;
     user_id: number;
     created_at: string;

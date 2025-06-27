@@ -4,6 +4,7 @@ import { useForm } from '@inertiajs/vue3';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import InputError from '@/components/InputError.vue';
 import { toast } from 'vue-sonner';
 
@@ -16,6 +17,7 @@ const props = defineProps<Props>()
 
 const form = useForm({
     name: props.initial.name ?? '',
+    description: props.initial.description ?? '',
     color: props.initial.color ?? '',
 })
 
@@ -43,12 +45,17 @@ const submit = () => {
 </script>
 
 <template>
-    <form @submit.prevent="submit" class="space-y-4">
+    <form @submit.prevent="submit" class="space-y-4" autocomplete="off">
         <div class="flex flex-col gap-4">
             <div>
                 <Label for="name" class="mb-2">Tag name</Label>
-                <Input id="name" autocomplete="off" class="mt-1 block w-full" v-model="form.name" required />
+                <Input id="name" class="mt-1 block w-full" v-model="form.name" required />
                 <InputError :message="form.errors.name" />
+            </div>
+            <div>
+                <Label for="description" class="mb-2">Description</Label>
+                <Textarea id="description" type="text" class="mt-1 block w-full" v-model="form.description" />
+                <InputError :message="form.errors.description" />
             </div>
             <div>
                 <Label for="color" class="mb-2">Color</Label>
